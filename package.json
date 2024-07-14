@@ -61,6 +61,11 @@
           "type": "string",
           "default": "buf",
           "description": "Path to the buf binary"
+        },
+        "buf.binaryLSPPath": {
+          "type": "string",
+          "default": "bufls",
+          "description": "Path to the buf-lsp(bufls) binary"
         }
       }
     },
