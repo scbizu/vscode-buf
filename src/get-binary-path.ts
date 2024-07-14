@@ -5,6 +5,8 @@ import pkg from "../package.json";
 
 const defaultBinaryPath =
   pkg.contributes.configuration.properties["buf.binaryPath"].default;
+const defaultLSPBinaryPath =
+  pkg.contributes.configuration.properties["buf.binaryLSPPath"].default;
 
 const getWorkspaceFolderFsPath = () => {
   if (vscode.workspace.workspaceFolders === undefined) {
@@ -48,5 +50,36 @@ export const getBinaryPath = () => {
   return {
     cwd: workspaceFolderFsPath,
     binaryPath,
+  };
+};
+
+export const getLSPBinaryPath = () => {
+  const workspaceFolderFsPath = getWorkspaceFolderFsPath();
+  if (workspaceFolderFsPath === undefined) {
+    return {};
+  }
+  // Currently , the buf lsp server is `bufls`
+  // But the migration is happening ,see for details: https://github.com/bufbuild/buf/pull/2662
+  let lspBinaryPath = vscode.workspace
+    .getConfiguration("bufls")!
+    .get<string>("lspBinaryPath");
+
+  if (lspBinaryPath === undefined) {
+    console.log("bufls binary path was not set");
+    return {};
+  }
+
+  if (!path.isAbsolute(lspBinaryPath) && lspBinaryPath !== defaultLSPBinaryPath) {
+    // check if file exists
+    lspBinaryPath = path.join(workspaceFolderFsPath, lspBinaryPath);
+
+    if (!existsSync(lspBinaryPath)) {
+      console.log("bufls binary path does not exist: ", lspBinaryPath);
+      return {};
+    }
+  }
+  return {
+    cwd: workspaceFolderFsPath,
+    lspBinaryPath,
   };
 };

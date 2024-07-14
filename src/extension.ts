@@ -5,11 +5,17 @@ import { isError } from "./errors";
 import { Formatter } from "./formatter";
 import { parseLines, Warning } from "./parser";
 import { format, less } from "./version";
-import { getBinaryPath } from "./get-binary-path";
+import { getBinaryPath, getLSPBinaryPath } from "./get-binary-path";
+import { BufProvider } from "./def-provider";
 
 export function activate(context: vscode.ExtensionContext) {
   const { binaryPath } = getBinaryPath();
   if (binaryPath === undefined) {
+    return;
+  }
+
+  const { lspBinaryPath } = getLSPBinaryPath();
+  if (lspBinaryPath === undefined) {
     return;
   }
 
@@ -111,10 +117,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   const formatter = new Formatter(binaryPath);
   context.subscriptions.push(
-    vscode.languages.registerDocumentFormattingEditProvider("proto", formatter)
-  );
-  context.subscriptions.push(
     vscode.languages.registerDocumentFormattingEditProvider("proto3", formatter)
+  );
+  const definitionProvider = new BufProvider(lspBinaryPath);
+  context.subscriptions.push(
+    vscode.languages.registerDefinitionProvider("proto3", definitionProvider),
   );
   context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(doLint));
   context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(doLint));
@@ -129,4 +136,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // Nothing to do for now
-export function deactivate() {}
+export function deactivate() { }
