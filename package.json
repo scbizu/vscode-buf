@@ -2,7 +2,7 @@
   "name": "vscode-buf",
   "displayName": "Buf",
   "description": "Visual Studio Code support for Buf",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "icon": "logo.png",
   "publisher": "bufbuild",
   "repository": {
@@ -37,6 +37,7 @@
     "format"
   ],
   "activationEvents": [
+    "onLanguage:proto3",
     "workspaceContains:**/*.proto",
     "workspaceContains:**/buf.yaml",
     "workspaceContains:**/buf.lock",

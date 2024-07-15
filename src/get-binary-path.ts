@@ -61,8 +61,8 @@ export const getLSPBinaryPath = () => {
   // Currently , the buf lsp server is `bufls`
   // But the migration is happening ,see for details: https://github.com/bufbuild/buf/pull/2662
   let lspBinaryPath = vscode.workspace
-    .getConfiguration("bufls")!
-    .get<string>("lspBinaryPath");
+    .getConfiguration("buf")!
+    .get<string>("binaryLSPPath");
 
   if (lspBinaryPath === undefined) {
     console.log("bufls binary path was not set");
