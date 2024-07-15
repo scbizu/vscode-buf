@@ -14,15 +14,21 @@ export class BufProvider implements vscode.DefinitionProvider {
 		}
 		this.binaryPath = binaryPath;
 	}
-	public provideDefinition(
+
+	public async provideDefinition(
 		document: vscode.TextDocument,
 		position: vscode.Position,
 		token: vscode.CancellationToken
-	): vscode.ProviderResult<vscode.Definition> {
-		const wordRange = document.getWordRangeAtPosition(position);
-		const word = document.getText(wordRange);
-		console.log(word);
-		return this.runDefinitionProvider(document, position, token);
+	): Promise<vscode.Definition> {
+		return this.runDefinitionProvider(document, position, token).then(
+			(definition) => {
+				return definition;
+			},
+			(err) => {
+				console.log(err);
+				return Promise.reject('Check the console in dev tools to find errors when formatting.');
+			}
+		);
 	}
 
 	public runDefinitionProvider(
@@ -31,7 +37,7 @@ export class BufProvider implements vscode.DefinitionProvider {
 		token: vscode.CancellationToken,
 	): (Thenable<vscode.Definition>) {
 		return new Promise<vscode.Definition>((resolve, reject) => {
-			const pos = new vscode.Position(inputPos.line, inputPos.character);
+			const pos = new vscode.Position(inputPos.line+1, inputPos.character+1);
 			const p = cp.spawn(this.binaryPath, ['definition', this.buildLSPInput(doc, pos)]);
 			token.onCancellationRequested(() => !p.killed && p.kill());
 			p.stdout.setEncoding('utf8');
@@ -43,7 +49,6 @@ export class BufProvider implements vscode.DefinitionProvider {
 			p.stderr.on('data', (data: any) => {
 				stderr += data
 			})
-			console.log(defPosition);
 			p.on('error', (err: any) => {
 				if (err && (<any>err).code === 'ENOENT') {
 					return reject();

@@ -120,11 +120,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   const formatter = new Formatter(binaryPath, outputChannel);
   context.subscriptions.push(
-    vscode.languages.registerDocumentFormattingEditProvider("proto3", formatter)
+    vscode.languages.registerDocumentFormattingEditProvider("proto", formatter)
   );
   const definitionProvider = new BufProvider(lspBinaryPath);
   context.subscriptions.push(
-    vscode.languages.registerDefinitionProvider("proto3", definitionProvider),
+    vscode.languages.registerDefinitionProvider("proto", definitionProvider),
   );
   context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(doLint));
   context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(doLint));
