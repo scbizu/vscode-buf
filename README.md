@@ -2,7 +2,15 @@
 
 ## Installation
 
+### From source
+
 1. install the extension by `make package`
+2. and then install the generated `code --install-extension vscode-buf-0.6.3-unofficial.vsix` locally
+
+
+### From Release
+
+1. download the [release](https://github.com/scbizu/vscode-buf/releases/tag/v0.6.3-unofficial)
 2. and then install the generated `code --install-extension vscode-buf-0.6.3-unofficial.vsix` locally
 
 
