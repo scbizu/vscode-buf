@@ -2,7 +2,7 @@
   "name": "vscode-buf",
   "displayName": "Buf",
   "description": "Visual Studio Code support for Buf",
-  "version": "0.6.3",
+  "version": "0.6.3-unofficial",
   "icon": "logo.png",
   "publisher": "bufbuild",
   "repository": {
