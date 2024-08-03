@@ -6,6 +6,10 @@ service TestService {
   rpc TestMethod(TestMethodRequest) returns (TestMethodResponse) {}
 }
 
+enum TestEnum {
+  TEST_ENUM_UNSPECIFIED = 0;
+}
+
 message TestMethodRequest {
   string name = 1;
 }

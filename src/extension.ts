@@ -7,6 +7,7 @@ import { parseLines, Warning } from "./parser";
 import { format, less } from "./version";
 import { getBinaryPath, getLSPBinaryPath } from "./get-binary-path";
 import { BufProvider } from "./def-provider";
+import { SymbolDocProvider }  from "./symbol-doc";
 
 export function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Buf", "console");
@@ -125,6 +126,11 @@ export function activate(context: vscode.ExtensionContext) {
   const definitionProvider = new BufProvider(lspBinaryPath);
   context.subscriptions.push(
     vscode.languages.registerDefinitionProvider("proto", definitionProvider),
+  );
+
+  const symbolProvider = new SymbolDocProvider(lspBinaryPath);
+  context.subscriptions.push(
+    vscode.languages.registerDocumentSymbolProvider("proto",symbolProvider),
   );
   context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(doLint));
   context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(doLint));
