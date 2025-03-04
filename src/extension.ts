@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  const { lspBinaryPath } = getLSPBinaryPath();
+  const { lspBinaryPath } = getLSPBinaryPath(outputChannel);
   if (lspBinaryPath === undefined) {
     return;
   }

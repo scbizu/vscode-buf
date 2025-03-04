@@ -58,8 +58,8 @@ export const getBinaryPath = (outputChannel: vscode.OutputChannel) => {
   };
 };
 
-export const getLSPBinaryPath = () => {
-  const workspaceFolderFsPath = getWorkspaceFolderFsPath();
+export const getLSPBinaryPath = (outputChannel: vscode.OutputChannel) => {
+  const workspaceFolderFsPath = getWorkspaceFolderFsPath(outputChannel);
   if (workspaceFolderFsPath === undefined) {
     return {};
   }
